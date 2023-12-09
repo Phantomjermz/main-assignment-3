@@ -20,7 +20,7 @@
     <!-- Main Content Section -->
     <main>
         <section>
-            <h2>Welcome to Our Website</h2>
+            <h2>Welcome to my Website</h2>
             <p>This is the home page content. You can add more content here.</p>
            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim adipisci fuga natus, sunt tenetur, ratione iure nostrum autem atque similique nam id quaerat vitae voluptatem suscipit mollitia ea iste ex.</p>
            

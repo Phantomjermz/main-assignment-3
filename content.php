@@ -11,7 +11,7 @@
         <title>Home</title>
     </head>
 <body>
-    <!-- Header Section (you can include your global header here) -->
+    <!-- Header Section  -->
     <header>
         <?php include 'includes/header.php'; ?>
         </header>
@@ -20,7 +20,7 @@
         <section>
             <h2><?php echo $title; ?></h2>
             <p><?php echo $body; ?></p>
-            <!-- Additional content goes here -->
+            
         </section>
     </main>
 

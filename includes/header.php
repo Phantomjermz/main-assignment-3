@@ -1,11 +1,11 @@
 <header>
     <div class="logo">
-        <!-- logo or site name goes here -->
-        <h1>Welcome to Our Website</h1>
+        <!-- logo  -->
+        <h1>Welcome to my Website</h1>
     </div>
 
     <div class="login-form">
-        <!-- login form goes here -->
+        <!-- login form  -->
         <form action="login.php" method="post">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
