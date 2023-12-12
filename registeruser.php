@@ -1,0 +1,123 @@
+<?php
+session_start();
+include 'includes/db.php';
+include 'includes/functions.php';
+
+// Function to handle image upload
+function uploadImage($image, $username, $conn) {
+    // Specify the target directory where the file will be stored
+    $targetDirectory = "uploads/";
+
+    // Generate a unique filename based on the username and the original filename
+    $targetFileName = $username . "_" . basename($image["name"]);
+
+    // Construct the full path to the target file
+    $targetPath = $targetDirectory . $targetFileName;
+
+    // Move the uploaded file to the target directory
+    if (move_uploaded_file($image["tmp_name"], $targetPath)) {
+        // If the file was successfully moved, return the path to the uploaded file
+        return $targetPath;
+    } else {
+        // If the file move operation failed, return false
+        return false;
+    }
+}
+
+// Process registration form submission
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+    $email = $_POST["email"];
+    $profileImage = $_FILES["profileImage"];
+
+    // Validate inputs
+    if (validateInputs($username, $password, $email, $profileImage)) {
+        // Additional validation if needed
+
+        // Check for duplicate email
+        $duplicateEmailCheck = "SELECT * FROM users WHERE email='$email'";
+        $duplicateEmailResult = $conn->query($duplicateEmailCheck);
+
+        if ($duplicateEmailResult->num_rows > 0) {
+            echo "Email already exists.";
+        } else {
+            // Hash the password
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+            // Insert user into the database
+            $sql = "INSERT INTO users (username, password, email) VALUES ('$username', '$hashedPassword', '$email')";
+            $result = $conn->query($sql);
+
+            if ($result) {
+                // If the user was successfully inserted, upload the image
+                $imagePath = uploadImage($profileImage, $username, $conn);
+
+                if ($imagePath !== false) {
+                    // Update the user's image path in the database
+                    $updateImageSql = "UPDATE users SET image_path='$imagePath' WHERE username='$username'";
+                    $updateImageResult = $conn->query($updateImageSql);
+
+                    if (!$updateImageResult) {
+                        // Handle image update failure as needed
+                    }
+                }
+
+                echo "Registration successful.";
+            } else {
+                echo "Registration failed.";
+            }
+        }
+    } else {
+        echo "All fields are required.";
+    }
+}
+
+// Function to register a new user
+function registerUser($conn, $username, $password, $email, $profileImage) {
+    // Validate inputs
+    if (validateInputs($username, $password, $email, $profileImage)) {
+        // Check for duplicate email
+        if (!isEmailExists($conn, $email)) {
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            $sql = "INSERT INTO users (username, password, email) VALUES ('$username', '$hashedPassword', '$email')";
+            $result = $conn->query($sql);
+
+            if ($result) {
+                $imagePath = uploadImage($profileImage, $username, $conn);
+
+                if ($imagePath !== false) {
+                    $updateImageSql = "UPDATE users SET image_path='$imagePath' WHERE username='$username'";
+                    $updateImageResult = $conn->query($updateImageSql);
+
+                    if (!$updateImageResult) {
+                        // Handle image update failure as needed
+                    }
+                }
+
+                return "Registration successful.";
+            } else {
+                return "Registration failed.";
+            }
+        } else {
+            return "Email already exists.";
+        }
+    } else {
+        return "All fields are required.";
+    }
+}
+
+// Process registration form submission
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+    $email = $_POST["email"];
+    $profileImage = $_FILES["profileImage"];
+
+    // Call the registerUser function
+    $registrationResult = registerUser($conn, $username, $password, $email, $profileImage);
+
+    // Output the result
+    echo $registrationResult;
+}
+?>

@@ -1,11 +1,4 @@
-<?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
-
-?>
-
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,12 +7,11 @@ error_reporting(E_ALL);
     <title>Home</title>
 </head>
 <body>
-<?php include 'header.php'; ?>
-    
+    <?php include 'header.php'; ?>
     
     <main>
         <section>
-            <h2>Welcome to the Home Page</h2>
+            <h2>Welcome to the about page</h2>
             <p>This is the home page content.</p>
         </section>
     </main>

@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (loginUser($conn, $username, $password)) {
             $_SESSION['username'] = $username;
-            header("Location: content.php");
+            header("Location: users.php");
             exit();
         } else {
             echo "Invalid username or password.";
