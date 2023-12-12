@@ -1,37 +1,25 @@
 <?php
 
-function validateUserInputs($username, $password, $email, $profileImage) {
-    // Perform validation on each input
-    $errors = [];
+include 'includes/db.php';
+include 'includes/functions.php';
 
-    // Validate username
-    if (empty($username)) {
-        $errors[] = "Username is required.";
-    }
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])) {
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+    $email = $_POST["email"];
 
-    // Validate password
-    if (empty($password)) {
-        $errors[] = "Password is required.";
-    }
+    // Validate and register user
+    if (!empty($username) && !empty($password) && !empty($email)) {
+        // Perform server-side validation if needed
 
-    // Validate email
-    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors[] = "Invalid email address.";
-    }
-
-    // Check if a profile image is provided
-    if (!empty($profileImage['name'])) {
-        // Validate profile image
-        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-        $fileExtension = pathinfo($profileImage['name'], PATHINFO_EXTENSION);
-
-        if (!in_array(strtolower($fileExtension), $allowedExtensions)) {
-            $errors[] = "Invalid profile image. Please upload a valid image file (jpg, jpeg, png, gif).";
+        $result = registerUser($conn, $username, $password , $email);
+        if ($result) {
+            echo "Registration successful!";
+        } else {
+            echo "Error registering user.";
         }
+    } else {
+        echo "Username and password are required.";
     }
-
-    // Return true if there are no errors, otherwise return the error messages
-    return (empty($errors)) ? true : implode('<br>', $errors);
 }
-
 ?>

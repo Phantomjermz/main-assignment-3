@@ -16,7 +16,7 @@
         </header>
 
     <div class="container">
-        <form action="register_process.php" method="post" enctype="multipart/form-data">
+        <form action="register.php" method="post" enctype="multipart/form-data">
             <h2>Create Account</h2>
 
             <!-- Username -->
@@ -31,9 +31,6 @@
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required>
 
-            <!-- Profile Image -->
-            <label for="profile_image">Profile Image:</label>
-            <input type="file" id="profile_image" name="profile_image" accept="image/*">
 
             <!-- Submit Button -->
             <button type="submit" name="register">Create Account</button>
