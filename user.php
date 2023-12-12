@@ -3,26 +3,7 @@ session_start();
 include 'includes/db.php';
 include 'includes/functions.php';
 
-// Function to handle image upload
-function uploadImage($image, $username, $conn) {
-    // Specify the target directory where the file will be stored
-    $targetDirectory = "uploads/";
 
-    // Generate a unique filename based on the username and the original filename
-    $targetFileName = $username . "_" . basename($image["name"]);
-
-    // Construct the full path to the target file
-    $targetPath = $targetDirectory . $targetFileName;
-
-    // Move the uploaded file to the target directory
-    if (move_uploaded_file($image["tmp_name"], $targetPath)) {
-        // If the file was successfully moved, return the path to the uploaded file
-        return $targetPath;
-    } else {
-        // If the file move operation failed, return false
-        return false;
-    }
-}
 
 // Process registration form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -73,39 +54,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Function to register a new user
-function registerUser($conn, $username, $password, $email, $profileImage) {
-    // Validate inputs
-    if (validateInputs($username, $password, $email, $profileImage)) {
-        // Check for duplicate email
-        if (!isEmailExists($conn, $email)) {
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-            $sql = "INSERT INTO users (username, password, email) VALUES ('$username', '$hashedPassword', '$email')";
-            $result = $conn->query($sql);
-
-            if ($result) {
-                $imagePath = uploadImage($profileImage, $username, $conn);
-
-                if ($imagePath !== false) {
-                    $updateImageSql = "UPDATE users SET image_path='$imagePath' WHERE username='$username'";
-                    $updateImageResult = $conn->query($updateImageSql);
-
-                    if (!$updateImageResult) {
-                        // Handle image update failure as needed
-                    }
-                }
-
-                return "Registration successful.";
-            } else {
-                return "Registration failed.";
-            }
-        } else {
-            return "Email already exists.";
-        }
-    } else {
-        return "All fields are required.";
-    }
-}
 
 // Process registration form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

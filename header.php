@@ -26,7 +26,7 @@
     <nav>
         <ul>
             <li><a href="index.php">Home</a></li>
-            <li><a href="dashboard.html">Content</a></li>
+            <li><a href="about.php">Content</a></li>
             <li><a href="register.php">Register</a></li>
             <?php
             // Check if the user is logged in
