@@ -1,49 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="register" content="registration">
-       <link rel="stylesheet" href="./css/style.css">
-        <link rel="stylesheet" href="./css/header.css">
-        <link rel="stylesheet" href="./css/footer.css">
-        <title>Home</title>
-    </head>
-<body>
-    <!-- global header here-->
-    <header>
-        <?php include 'includes/header.php'; ?>
-        </header>
+<?php
 
-    <div class="container">
-        <form action="register_process.php" method="post" enctype="multipart/form-data">
-            <h2>Create Account</h2>
+function validateUserInputs($username, $password, $email, $profileImage) {
+    // Perform validation on each input
+    $errors = [];
 
-            <!-- Username -->
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
+    // Validate username
+    if (empty($username)) {
+        $errors[] = "Username is required.";
+    }
 
-            <!-- Password -->
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+    // Validate password
+    if (empty($password)) {
+        $errors[] = "Password is required.";
+    }
 
-            <!-- Email -->
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+    // Validate email
+    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = "Invalid email address.";
+    }
 
-            <!-- Profile Image -->
-            <label for="profile_image">Profile Image:</label>
-            <input type="file" id="profile_image" name="profile_image" accept="image/*">
+    // Check if a profile image is provided
+    if (!empty($profileImage['name'])) {
+        // Validate profile image
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+        $fileExtension = pathinfo($profileImage['name'], PATHINFO_EXTENSION);
 
-            <!-- Submit Button -->
-            <button type="submit" name="register">Create Account</button>
-        </form>
-    </div>
-    
-    
-     <!-- global footer here) -->
-     <footer>
-     <?php include 'includes/footer.php'; ?>
-    </footer>
-</body>
-</html>
+        if (!in_array(strtolower($fileExtension), $allowedExtensions)) {
+            $errors[] = "Invalid profile image. Please upload a valid image file (jpg, jpeg, png, gif).";
+        }
+    }
+
+    // Return true if there are no errors, otherwise return the error messages
+    return (empty($errors)) ? true : implode('<br>', $errors);
+}
+
+?>
