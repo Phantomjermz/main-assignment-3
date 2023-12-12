@@ -16,8 +16,8 @@ include 'includes/functions.php';
     
     <main>
         <section>
-            <h2>Welcome to the about page</h2>
-            <p>This is the home page content.</p>
+            <h2>Welcome to the content page</h2>
+            <p>This is the content.</p>
         </section>
     </main>
 

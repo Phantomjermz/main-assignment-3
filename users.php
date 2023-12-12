@@ -32,11 +32,32 @@ $users = getAllUsers($conn);
         <div class="container">
             <h2>Registered Users</h2>
             
-            <!-- Display registered users -->
+            <!-- Display registered users and their content -->
             <ul>
                 <?php foreach ($users as $user): ?>
                     <li>
-                        <?php echo $user['username']; ?>
+                        <strong><?php echo $user['username']; ?></strong>
+
+                        <!-- Display content for each user -->
+                        <?php
+                        $userContent = getContentByUserId($conn, $user['id']);
+                        if ($userContent !== null) {
+                            echo '<p>User Content: ' . $userContent['content'] . '</p>';
+                        } else {
+                            echo '<p>No content available for this user.</p>';
+                        }
+                        ?>
+
+                        <!-- Display additional user information -->
+                        <?php
+                        $userInfo = getUserByUsername($conn, $user['username']);
+                        if ($userInfo !== null) {
+                            echo '<p>Email: ' . $userInfo['email'] . '</p>';
+                            // Add more fields as needed
+                        }
+                        ?>
+
+                        <!-- Delete user form -->
                         <form action="" method="post">
                             <input type="hidden" name="usernameToDelete" value="<?php echo $user['username']; ?>">
                             <button type="submit" name="deleteUser">Delete</button>
