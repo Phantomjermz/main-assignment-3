@@ -1,5 +1,6 @@
 <header>
     <div class="logo">
+        <img src="photos/vuetify.svg" alt="logo">
         <h1>Welcome to my Website</h1>
     </div>
 
